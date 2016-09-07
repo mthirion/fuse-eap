@@ -1,7 +1,7 @@
-Camel Spring XML Application
-============================
+Spring-based Camel Application
+==============================
 
-This is a Camel Spring application, intended to demonstrate the portability between FUSE and EAP.
+This is a Spring XML based Camel application, intended to demonstrate the portability of FUSE between the Karaf and the EAP runtime.
 
 
 Description

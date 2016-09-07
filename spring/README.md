@@ -2,43 +2,90 @@ Camel Spring XML Application
 ============================
 
 This is a Camel Spring application, intended to demonstrate the portability between FUSE and EAP.
-The current target runtime is EAP 
 
 
 Description
 -----------
-The camel route is defined in src/main/resources/META-INF/jboss-camel-context.xml.
-A file such as "*-camel-context.xml" will be auto-discovered at runtime.
+The camel route is defined using Spring XML.
+The spring file is located in src/main/resources/META-INF/spring/jboss-camel-context.xml.
 
 The route simply writes a message in the logs 10 times using the Camel Timer component.
 The route uses a bean defined in /src/main/java
 
 
+Portability considerations
+--------------------------
+On EAP:
+ - a file named "*-camel-context.xml" located under META-INF will be auto-discovered at runtime
+ - the maven package type is "jar", but it could actually be a bundle
+ - the default camel version is 2.17 (EAP 6.4), but basically it will work with the v2.15 as well
+
+On Karaf
+ - camel-spring will look for the Spring file under META-INF/spring
+ - the maven package type is "bundle"
+ - there are additional fabric properties to bring features suck as camel-core and camel-spring
+ - the default camel version is 2.15
+
+
 Getting started
 ---------------
 
-Install Fuse on EAP
+Starting with EAP, install Fuse on EAP and Fuse on Karaf
 
-Start the server
+To run the example on EAP:
 
-Build the application 
+  - Start the server ($EAP_HOME/bin/standalone.sh)
 
-Deploy the application to the EAP server
+  - Build the application  'mvn clean install)
 
-Look at the logs
+  - Deploy the application to the EAP server (mvn jboss-as:deploy)
+    (the jboss-as maven plugin is already present in the pom.xml)
+
+  - Check the logs to see that the Camel route is running
+
+To switch to the Karaf runtime (Fabric):
+  - Make sure the package type is set to "bundle"
+    (the felix bundle plugin is already declared in the pom.xml)
+
+  - Start the Fabric runtime ($FUSE_HOME/bin/fuse)
+    create a karaf container
+
+  - Build the application (mvn clean install)
+
+  - Deploy the application to Fabric (mvn fabric8:deploy)
+    (the fabrci8 maven plugin is already present in the pom.xml)
+    (the pom.xml also contains the proper declaration for installing the camel-core and camel-spring features during the deployment)
+
+  - Assign the profile to a Karaf container (fabric:container-add-profile <container> <profile>)
+
+  - Look at the logs of the Karaf container to check that the application is working
 
 
 Tests
 -----
 
-A basic test has been created using Arquillian.
+A basic test has been created using Arquillian (the test actually always returns true)
+This test has been created only to demonstrate the Arquillian framework.
 
-The Arquillian framework is defined in src/test/resources/arquillian.xml and contains properties that describe the target runtime (here EAP v6)
+Arquillian is defined in src/test/resources/arquillian.xml
+The description file contains 4 containers definitions:
+ - EAP local
+ - EAP remote
+ - Fabric local
+ - fabric remote
 
 Within maven, the "default" profile is configured to skip the tests.
-There are 2 additionnal profiles to run local and remote tests.
-So, the tests can be run using mvn test -Parquillian-local or mvn test -Parquillian-remote
+There are then 4 additionnal profiles that you can use to trigger tests for one of the 4 defined Arquillian containers
+The profiles corresponds to:
+ -  mvn test -Peap-arquillian-local
+ -  mvn test -Peap-arquillian-remote
+ -  mvn test -Pfabric-arquillian-local
+ -  mvn test -Pfabric-arquillian-remote
 
-Arquillian requires the JBOSS_HOME environment variable set to the location of the target EAP server on the filesystem
+The Arquillian definition uses 2 custom environment variables for the local tests, pointing to the install location of the product:
+ - JBOSS_HOME points to the install dir of EAP
+ - KARAF_INSTALL_HOME points to the install dir of FUSE Fabric
+
+
 
 

@@ -16,35 +16,37 @@ The route simply writes a message in the logs 10 times using the Camel Timer com
 Portability considerations
 --------------------------
 On EAP:
+
   The maven package type is "jar", but it could actually be a bundle
   
   The default camel version is 2.17
   
-  The following annotations are not portable to karaf
-    @Startup
-    @CamelAware
-    @ApplicationScope
+  The following annotations are not portable to karaf: <br>
+    @Startup <br>
+    @CamelAware <br>
+    @ApplicationScope <br>
   
-  Instead, use the only mainfulone, which is:
+  Instead, use: <br>
     @ContextName("myCamelContext")
 
 
 On Karaf
-  The maven package type is "bundle"
+
+  The maven package type is "bundle".
   
-  The default camel version is 2.15
-  However, CDI requires camel-core and camel-cdi in version 2.17+
+  The default camel version is 2.15 <br>
+  However, CDI requires camel-core and camel-cdi in version 2.17+ <br>
   Those bundles are installed on the Karaf container during deployment time thanks to the <fabric8.bundles> declaration in the pom.xml
  
-  The OSGI version of the CDI container is reprensented by "pax-cdi-weld" feature and the "deltaspike" extension.
+  The OSGI version of the CDI container is reprensented by "pax-cdi-weld" feature and the "deltaspike" extension. <br>
   Those features are also installed during deployment time.
 
-  The CDI framework needs to be activated at the bundle level.
-  This is done in the configuration of the bundle dependencies:
-            <Require-Capability>
-              osgi.extender;filter:="(osgi.extender=pax.cdi)",
-              org.ops4j.pax.cdi.extension;filter:="(extension=camel-cdi-extension)"
-            </Require-Capability>  
+  The CDI framework needs to be activated at the bundle level. <br>
+  This is done in the configuration of the bundle dependencies: <br>
+            &lt;Require-Capability&gt; <br>
+              osgi.extender;filter:="(osgi.extender=pax.cdi)", <br>
+              org.ops4j.pax.cdi.extension;filter:="(extension=camel-cdi-extension)" <br>
+            &ltg/Require-Capability&gt;  <br>
 
 
 Getting started
@@ -62,7 +64,9 @@ To run the example on EAP:
 
   - Check the logs to see that the Camel route is running
 
+
 To switch to the Karaf runtime (Fabric):
+
   - Make sure the package type is set to "bundle".  The felix bundle plugin is already declared in the pom.xml
 
   - Start the Fabric runtime ($FUSE_HOME/bin/fuse)

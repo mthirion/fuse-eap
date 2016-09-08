@@ -22,7 +22,8 @@ On EAP:
  - the maven package type is "jar", but it could actually be a bundle
  - the default camel version is 2.17 (EAP 6.4), but basically it will work with the v2.15 as well
 
-On Karaf
+<br>
+On Karaf:
  - camel-spring will look for the Spring file under META-INF/spring
  - the maven package type is "bundle"
  - there are additional fabric properties to bring features suck as camel-core and camel-spring
@@ -40,12 +41,14 @@ To run the example on EAP:
 
   - Build the application  (mvn clean install)
 
-  - Deploy the application to the EAP server (mvn jboss-as:deploy).  The jboss-as maven plugin is already present in the pom.xml
+  - Deploy the application to the EAP server (mvn jboss-as:deploy).  <br>
+    The jboss-as maven plugin is already present in the pom.xml
 
   - Check the logs to see that the Camel route is running
 
 To switch to the Karaf runtime (Fabric):
-  - Make sure the package type is set to "bundle".  The felix bundle plugin is already declared in the pom.xml
+  - Make sure the package type is set to "bundle".  <br>
+    The felix bundle plugin is already declared in the pom.xml
 
   - Start the Fabric runtime ($FUSE_HOME/bin/fuse)
 
@@ -53,9 +56,11 @@ To switch to the Karaf runtime (Fabric):
 
   - Build the application (mvn clean install)
 
-  - Deploy the application to Fabric (mvn fabric8:deploy).  The fabrci8 maven plugin is already present in the pom.xml, and the pom.xml also contains the proper declaration for installing the camel-core and camel-spring features during the deployment
+  - Deploy the application to Fabric (mvn fabric8:deploy).  <br>
+    The fabrci8 maven plugin is already present in the pom.xml <br>
+    The pom.xml also contains the proper declaration for installing the camel-core and camel-spring features during the deployment
 
-  - Assign the profile to a Karaf container (fabric:container-add-profile <container> <profile>)
+  - Assign the profile to a Karaf container (fabric:container-add-profile "container" "profile")
 
   - Look at the logs of the Karaf container to check that the application is working
 

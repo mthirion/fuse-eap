@@ -29,8 +29,8 @@ On EAP:
   Instead, use: <br>
     @ContextName("myCamelContext")
 
-
-On Karaf
+<br>
+On Karaf:
 
   The maven package type is "bundle".
   
@@ -46,7 +46,7 @@ On Karaf
             &lt;Require-Capability&gt; <br>
               osgi.extender;filter:="(osgi.extender=pax.cdi)", <br>
               org.ops4j.pax.cdi.extension;filter:="(extension=camel-cdi-extension)" <br>
-            &ltg/Require-Capability&gt;  <br>
+            &lt;/Require-Capability&gt;  <br>
 
 
 Getting started
@@ -60,14 +60,16 @@ To run the example on EAP:
 
   - Build the application  (mvn clean install)
 
-  - Deploy the application to the EAP server (mvn jboss-as:deploy).  The jboss-as maven plugin is already present in the pom.xml
+  - Deploy the application to the EAP server (mvn jboss-as:deploy).   <br>
+    The jboss-as maven plugin is already present in the pom.xml
 
   - Check the logs to see that the Camel route is running
 
 
 To switch to the Karaf runtime (Fabric):
 
-  - Make sure the package type is set to "bundle".  The felix bundle plugin is already declared in the pom.xml
+  - Make sure the package type is set to "bundle".  <br>
+    The felix bundle plugin is already declared in the pom.xml
 
   - Start the Fabric runtime ($FUSE_HOME/bin/fuse)
 
@@ -75,9 +77,11 @@ To switch to the Karaf runtime (Fabric):
 
   - Build the application (mvn clean install)
 
-  - Deploy the application to Fabric (mvn fabric8:deploy).  The fabrci8 maven plugin is already present in the pom.xml, and the pom.xml also contains the proper declaration for installing the bundles and features dependencies
+  - Deploy the application to Fabric (mvn fabric8:deploy).   <br>
+    The fabrci8 maven plugin is already present in the pom.xml. <br>
+    The pom.xml also contains the proper declaration for installing the bundles and features dependencies
 
-  - Assign the profile to a Karaf container (fabric:container-add-profile <container> <profile>)
+  - Assign the profile to a Karaf container (fabric:container-add-profile "container" "profile")
 
   - Look at the logs of the Karaf container to check that the application is working
 

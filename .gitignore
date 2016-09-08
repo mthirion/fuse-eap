@@ -10,3 +10,6 @@ buildNumber.properties
 spring/.settings/
 spring/.classpath
 spring/.project
+cdi/.settings/
+cdi/.classpath
+cdi/.project

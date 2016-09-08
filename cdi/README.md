@@ -1,42 +1,60 @@
-Spring-based Camel Application
-==============================
+CDI-based Camel Application
+===========================
 
-This is a Spring XML based Camel application, intended to demonstrate the portability of FUSE between the Karaf and the EAP runtime.
+This is a CDI-based Camel application, intended to demonstrate the portability of FUSE between the Karaf and the EAP runtime.
 
 
 Description
 -----------
-The camel route is defined using Spring XML.
+The camel route is defined using CDI in plain Java with a customer RouteBuilder implementation.
 
-The spring file is located in src/main/resources/META-INF/spring/jboss-camel-context.xml.
+The corresponding (empty) beans.xml is located in src/main/resources/META-INF
 
 The route simply writes a message in the logs 10 times using the Camel Timer component.
-
-The route uses a bean defined in /src/main/java
 
 
 Portability considerations
 --------------------------
 On EAP:
- - a file named "*-camel-context.xml" located under META-INF will be auto-discovered at runtime
- - the maven package type is "jar", but it could actually be a bundle
- - the default camel version is 2.17 (EAP 6.4), but basically it will work with the v2.15 as well
+  The maven package type is "jar", but it could actually be a bundle
+  
+  The default camel version is 2.17
+  
+  The following annotations are not portable to karaf
+    @Startup
+    @CamelAware
+    @ApplicationScope
+  
+  Instead, use the only mainfulone, which is:
+    @ContextName("myCamelContext")
+
 
 On Karaf
- - camel-spring will look for the Spring file under META-INF/spring
- - the maven package type is "bundle"
- - there are additional fabric properties to bring features suck as camel-core and camel-spring
- - the default camel version is 2.15
+  The maven package type is "bundle"
+  
+  The default camel version is 2.15
+  However, CDI requires camel-core and camel-cdi in version 2.17+
+  Those bundles are installed on the Karaf container during deployment time thanks to the <fabric8.bundles> declaration in the pom.xml
+ 
+  The OSGI version of the CDI container is reprensented by "pax-cdi-weld" feature and the "deltaspike" extension.
+  Those features are also installed during deployment time.
+
+  The CDI framework needs to be activated at the bundle level.
+  This is done in the configuration of the bundle dependencies:
+            <Require-Capability>
+              osgi.extender;filter:="(osgi.extender=pax.cdi)",
+              org.ops4j.pax.cdi.extension;filter:="(extension=camel-cdi-extension)"
+            </Require-Capability>  
 
 
 Getting started
 ---------------
 
-Install Fuse on EAP and Fuse on Karaf
+Install Fuse on EAP and Fuse on Karaf.
 
 To run the example on EAP:
 
-  - Start the server ($EAP_HOME/bin/standalone.sh)
+  - Start the EAP server ($EAP_HOME/bin/standalone.sh)
 
   - Build the application  (mvn clean install)
 
@@ -53,7 +71,7 @@ To switch to the Karaf runtime (Fabric):
 
   - Build the application (mvn clean install)
 
-  - Deploy the application to Fabric (mvn fabric8:deploy).  The fabrci8 maven plugin is already present in the pom.xml, and the pom.xml also contains the proper declaration for installing the camel-core and camel-spring features during the deployment
+  - Deploy the application to Fabric (mvn fabric8:deploy).  The fabrci8 maven plugin is already present in the pom.xml, and the pom.xml also contains the proper declaration for installing the bundles and features dependencies
 
   - Assign the profile to a Karaf container (fabric:container-add-profile <container> <profile>)
 

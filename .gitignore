@@ -13,3 +13,9 @@ spring/.project
 cdi/.settings/
 cdi/.classpath
 cdi/.project
+springboot/.settings/
+springboot/.classpath
+springboot/.project
+springboot-xml/.settings/
+springboot-xml/.classpath
+springboot-xml/.project

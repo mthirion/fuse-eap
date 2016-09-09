@@ -1,0 +1,3 @@
+camel.springboot.main-run-controller: true
+camel.springboot.xmlRoutes: classpath:routes/*.xml
+
